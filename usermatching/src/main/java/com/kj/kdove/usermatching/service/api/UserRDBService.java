@@ -12,7 +12,7 @@ public interface UserRDBService {
      * @param userId
      * @return
      */
-    boolean addUserIdtoRDB(String userId);
+    boolean addUserIdtoRDB(String userId,String ipAddr);
 
     /**
      * 通过用户id获取redis中对应的value

@@ -5,7 +5,6 @@ import com.kj.kdove.usermatching.service.api.MatchingService;
 import com.kj.kdove.usermatching.service.api.UserRDBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 @Service
@@ -20,7 +19,7 @@ public class MatchingServiceImpl implements MatchingService {
 
     @Override
     public Map<String,String> MatchingUser(String userId) {
-        Map<String,String> remap = new Hashtable<>();
+        Map<String,String> remap = new HashMap<>();
         int count = 0;
         while (count < 5){
             count++;
@@ -37,20 +36,30 @@ public class MatchingServiceImpl implements MatchingService {
                 if (!randomKey.equals(MatchingEnum.MATCHING_OVERTIME.getMessage())
                         && !randomKey.equals(MatchingEnum.MATCHING_NUM_EXC.getMessage())){
                     if (flageKey(userId,randomKey)){
-                        userRDBService.resetUserIdFromRDB(userId,userId+"-"+randomKey);
-                        userRDBService.resetUserIdFromRDB(randomKey,randomKey+"-"+userId);
-                        remap.put(userId,randomKey);
+                        String k1_value = userRDBService.getValueByUserIdFromRDB(userId);
+                        String k2_value = userRDBService.getValueByUserIdFromRDB(randomKey);
+                        userRDBService.resetUserIdFromRDB(userId, k1_value + k2_value);
+                        userRDBService.resetUserIdFromRDB(randomKey,k2_value + k1_value);
+                        String newValue = userRDBService.getValueByUserIdFromRDB(userId);
+                        String[] newSplit = newValue.split("-");
+                        getResponseMap(remap,newSplit[0],newSplit[1]);
                         break;
-                    }else {
-                        continue;
                     }
                 }
             }else {
-                remap.put(split[0],split[1]);
+                getResponseMap(remap,split[0],split[1]);
                 break;
             }
         }
         return remap;
+    }
+
+    public void getResponseMap(Map<String,String> map,String k1_value,String k2_value){
+        String[] k1_sp = k1_value.split("/");
+        String[] k2_sp = k2_value.split("/");
+        map.put("matching",k1_sp[0]+"-"+k2_sp[0]);
+        map.put(k1_sp[0],k1_sp[1]);
+        map.put(k2_sp[0],k2_sp[1]);
     }
 
     public String randomKey(String userId,int count){

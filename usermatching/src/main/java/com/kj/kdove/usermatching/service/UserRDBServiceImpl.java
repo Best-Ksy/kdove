@@ -16,11 +16,13 @@ public class UserRDBServiceImpl implements UserRDBService {
     private RedisService redisService;
 
     @Override
-    public boolean addUserIdtoRDB(String userId) {
+    public boolean addUserIdtoRDB(String userId,String ipAddr) {
+
         String value = redisService.get(userId);
         if (value == null){
-            redisService.set(userId,userId+"-");
-//            redisService.expire(userId,100);9
+
+            redisService.set(userId,userId+"/"+ipAddr+"-");
+//            redisService.expire(userId,100);
             return true;
         }else {
             return false;

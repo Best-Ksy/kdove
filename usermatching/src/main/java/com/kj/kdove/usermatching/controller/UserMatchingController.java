@@ -3,12 +3,13 @@ import com.kj.kdove.commons.dto.ResponseData;
 import com.kj.kdove.commons.matching.MatchingEnum;
 import com.kj.kdove.usermatching.service.api.MatchingService;
 import com.kj.kdove.usermatching.service.api.UserRDBService;
+import com.kj.kdove.usermatching.utils.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -25,9 +26,10 @@ public class UserMatchingController {
     private MatchingService matchingService;
 
     @GetMapping(value = "/getmatching/{userid}")
-    public ResponseData<Map<String,String>> MatchingFunction(@PathVariable String userid){
+    public ResponseData<Map<String,String>> MatchingFunction(@PathVariable String userid, HttpServletRequest request){
+        String ipAddr = IpUtil.getIpAddr(request);
         //存入reids
-        boolean flag = userRDBService.addUserIdtoRDB(userid);
+        boolean flag = userRDBService.addUserIdtoRDB(userid,ipAddr);
         try {
             //避免redis处于无数据状态，增加匹配基数
             Thread.sleep(10000);
@@ -36,7 +38,6 @@ public class UserMatchingController {
         }
         if (flag){
             Map<String, String> matchmap = matchingService.MatchingUser(userid);
-            System.out.println(matchmap);
             if (matchmap.size() == 0){
                 userRDBService.removeUserIdFromRDB(userid);
                 return new ResponseData<>(
@@ -47,6 +48,7 @@ public class UserMatchingController {
             }else {
                 //匹配成功，在内存中删除自己的匹配信息
                 if (userRDBService.getValueByUserIdFromRDB(userid) != null){
+
                     userRDBService.removeUserIdFromRDB(userid);
                 }
                 String date = simpleDateFormat.format(new Date());
