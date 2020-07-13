@@ -14,7 +14,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>commons</name>
     <packaging>jar</packaging>
-    <description>common class</description>
+    <description>common classes</description>
 
     <dependencies>
         <dependency>
