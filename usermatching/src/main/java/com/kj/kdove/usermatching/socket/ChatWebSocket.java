@@ -21,7 +21,6 @@ public class ChatWebSocket {
     public static List<ChatWebSocket> webSockets = new CopyOnWriteArrayList<ChatWebSocket>();
 
     private Session session;
-
     private String userid;
     private String socketid;
 
@@ -32,6 +31,7 @@ public class ChatWebSocket {
      */
     @OnOpen
     public void onOpen(Session session, @PathParam("socketid") String socketid,@PathParam("userid") String userid){
+
         if (socketid == null || "".equals(socketid) || userid == null || "".equals(userid)){
             try {
                 session.close();
@@ -100,7 +100,7 @@ public class ChatWebSocket {
         if (socketid == null || "".equals(socketid) || userid == null || "".equals(userid)){
             return;
         } else {
-            String[] userids = socketid.split("_");
+            String[] userids = socketid.split("-");
             for (String otherid:userids){
                 //找到两个人userid和matching对应的webSocket实例
                 for (ChatWebSocket chatWebSocket:webSockets) {

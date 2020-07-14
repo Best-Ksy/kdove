@@ -5,10 +5,8 @@ import com.kj.kdove.usermatching.service.api.MatchingService;
 import com.kj.kdove.usermatching.service.api.UserRDBService;
 import com.kj.kdove.usermatching.utils.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,6 +23,7 @@ public class UserMatchingController {
     @Autowired
     private MatchingService matchingService;
 
+    @CrossOrigin(value = "*")
     @GetMapping(value = "/getmatching/{userid}")
     public ResponseData<Map<String,String>> MatchingFunction(@PathVariable String userid, HttpServletRequest request){
         String ipAddr = IpUtil.getIpAddr(request);
