@@ -1,4 +1,8 @@
 spring:
+  application:
+    name: usernatching
+  main:
+    allow-bean-definition-overriding: true
   redis:
     host: 127.0.0.1
     port: 6379
@@ -9,5 +13,8 @@ spring:
         max-active: 8
         max-wait: -1m
         max-idle: 8
+  reactorurl:
+    dbserviceurl: http://localhost:8001
 server:
-  port: 8000
+  port: 8088
+

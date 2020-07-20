@@ -49,6 +49,16 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
+        <!--Retrofit2-->
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>retrofit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>converter-gson</artifactId>
+        </dependency>
+
         <!--project-->
         <dependency>
             <groupId>com.kj</groupId>
