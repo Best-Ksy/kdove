@@ -19,6 +19,7 @@
         <module>dependencies</module>
         <module>usermatching</module>
         <module>commons</module>
+        <module>dbservice</module>
     </modules>
 
     <properties>
