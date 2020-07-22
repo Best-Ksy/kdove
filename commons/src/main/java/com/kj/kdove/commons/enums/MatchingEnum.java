@@ -1,4 +1,4 @@
-package com.kj.kdove.commons.matching;
+package com.kj.kdove.commons.enums;
 
 public enum  MatchingEnum {
 

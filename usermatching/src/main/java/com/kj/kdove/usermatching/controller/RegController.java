@@ -2,7 +2,7 @@ package com.kj.kdove.usermatching.controller;
 
 import com.kj.kdove.commons.domain.KDoveUser;
 import com.kj.kdove.commons.dto.ResponseData;
-import com.kj.kdove.commons.matching.UserEnum;
+import com.kj.kdove.commons.enums.UserEnum;
 import com.kj.kdove.usermatching.service.api.UserDBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

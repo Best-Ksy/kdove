@@ -1,6 +1,6 @@
 package com.kj.kdove.usermatching.controller;
 import com.kj.kdove.commons.dto.ResponseData;
-import com.kj.kdove.commons.matching.MatchingEnum;
+import com.kj.kdove.commons.enums.MatchingEnum;
 import com.kj.kdove.usermatching.service.api.MatchingService;
 import com.kj.kdove.usermatching.service.api.UserRDBService;
 import com.kj.kdove.usermatching.utils.IpUtil;

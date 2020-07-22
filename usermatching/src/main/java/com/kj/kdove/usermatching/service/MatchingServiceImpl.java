@@ -1,6 +1,6 @@
 package com.kj.kdove.usermatching.service;
 
-import com.kj.kdove.commons.matching.MatchingEnum;
+import com.kj.kdove.commons.enums.MatchingEnum;
 import com.kj.kdove.usermatching.service.api.MatchingService;
 import com.kj.kdove.usermatching.service.api.UserRDBService;
 import org.springframework.beans.factory.annotation.Autowired;
