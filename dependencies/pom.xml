@@ -14,12 +14,22 @@
         <spring.boot.starter.redis>1.3.8.RELEASE</spring.boot.starter.redis>
         <spring-boot-mapper.version>2.1.5</spring-boot-mapper.version>
         <retrofit.version>2.1.0</retrofit.version>
+        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
     </properties>
 
 
     <dependencyManagement>
 
         <dependencies>
+
+            <!-- Spring Cloud -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
             <!--redis-->
             <dependency>

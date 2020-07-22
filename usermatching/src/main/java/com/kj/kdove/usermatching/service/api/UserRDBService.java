@@ -2,6 +2,10 @@ package com.kj.kdove.usermatching.service.api;
 
 import java.util.List;
 
+/**
+ * redis service
+ */
+
 public interface UserRDBService {
 
 

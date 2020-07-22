@@ -2,6 +2,11 @@ package com.kj.kdove.usermatching.service.api;
 
 import java.util.Map;
 
+
+/**
+ * 匹配逻辑 service
+ */
+
 public interface MatchingService {
 
     /**

@@ -59,6 +59,12 @@
             <artifactId>converter-gson</artifactId>
         </dependency>
 
+        <!--spring security oauth2-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
+
         <!--project-->
         <dependency>
             <groupId>com.kj</groupId>

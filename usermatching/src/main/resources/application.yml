@@ -17,4 +17,3 @@ spring:
     dbserviceurl: http://localhost:8001
 server:
   port: 8088
-
