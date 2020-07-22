@@ -32,5 +32,8 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (kDoveUser.getRegdate() == null){
             kDoveUser.setRegdate(new Date());
         }
+        if (kDoveUser.getUcode() == null){
+            kDoveUser.setUcode(String.valueOf(System.currentTimeMillis()));
+        }
     }
 }
