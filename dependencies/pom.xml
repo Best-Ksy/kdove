@@ -15,6 +15,12 @@
         <spring-boot-mapper.version>2.1.5</spring-boot-mapper.version>
         <retrofit.version>2.1.0</retrofit.version>
         <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+        <commons-lang3.version>3.4</commons-lang3.version>
+        <commons-codec.version>1.10</commons-codec.version>
+        <httpclient.version>4.3.6</httpclient.version>
+        <gson.version>2.5</gson.version>
+        <fastjson.version>1.2.44</fastjson.version>
+        <guava.version>25.1-jre</guava.version>
     </properties>
 
 
@@ -72,6 +78,41 @@
                 <artifactId>converter-gson</artifactId>
                 <version>${retrofit.version}</version>
             </dependency>
+
+            <!--短信-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
         </dependencies>
 
 

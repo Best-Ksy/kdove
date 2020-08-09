@@ -11,7 +11,15 @@ public enum  UserEnum {
     USER_REG_FALSE_NO1(211,"用户名已存在，请重新修改用户名"),
     USER_REG_FALSE_NO2(212,"用户名错误，请查看用户名"),
     USER_REG_SUCCESS(213,"注册成功"),
-    USER_REG_FALSE(214,"注册失败，请重新注册")
+    USER_REG_FALSE(214,"注册失败，请重新注册"),
+
+    SEND_SMS_SUCCESS(230,"短信发送成功"),
+    SEND_SMS_SERVICE_EXCEPTION(233,"服务异常"),
+    SEND_SMS_MOBILE_ERROR(236,"手机号码不正确"),
+    SEND_SMS_OVER_MAXNUM_LIMITS(222,"超过每日最大次数"),
+    SEND_SMS_EXC(223,"网络错误请稍后重试")
+
+
     ;
 
     private int code;
