@@ -1,5 +1,7 @@
 package com.kj.kdove.usermatching;
 
+import com.kj.kdove.commons.domain.KDoveUser;
+import com.kj.kdove.commons.dto.ResponseData;
 import com.kj.kdove.usermatching.retrofit2.DbApi;
 import okhttp3.ResponseBody;
 import org.junit.Test;
@@ -16,9 +18,9 @@ public class Retrofit2Test {
     @Autowired
     private DbApi dbApi;
 
-//    @Test
-//    public void test1(){
-//        Call<ResponseBody> userinfo = dbApi.getUserinfo();
-//        System.out.println(userinfo);
-//    }
+    @Test
+    public void test1(){
+        Call<ResponseData<KDoveUser>> userinfo = dbApi.getUserinfo("kjsda");
+        System.out.println(userinfo);
+    }
 }

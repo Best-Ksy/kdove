@@ -18,10 +18,10 @@ public class UserRDBServiceImpl implements UserRDBService {
     @Override
     public boolean addUserIdtoRDB(String userId,String ipAddr) {
 
-        String value = redisService.get(userId);
+        String value = redisService.get_matching(userId);
         if (value == null){
 
-            redisService.set(userId,userId+"/"+ipAddr+"-");
+            redisService.set_matching(userId,userId+"/"+ipAddr+"-");
 //            redisService.expire(userId,100);
             return true;
         }else {
@@ -32,21 +32,21 @@ public class UserRDBServiceImpl implements UserRDBService {
 
     @Override
     public String getValueByUserIdFromRDB(String userId) {
-        return redisService.get(userId);
+        return redisService.get_matching(userId);
     }
 
     @Override
     public boolean removeUserIdFromRDB(String userId) {
-        return redisService.remove(userId);
+        return redisService.remove_matching(userId);
     }
 
     @Override
     public boolean resetUserIdFromRDB(String key, String value) {
-        String s = redisService.get(key);
+        String s = redisService.get_matching(key);
         if (s == null){
             return false;
         }else {
-            redisService.set(key,value);
+            redisService.set_matching(key,value);
             return true;
         }
     }
@@ -54,7 +54,7 @@ public class UserRDBServiceImpl implements UserRDBService {
     @Override
     public List<String> getAllKeyExcuteUserId(String userId) {
         List<String> keys = new ArrayList<>();
-        Set<String> redisKeys = redisService.getRedisKeys();
+        Set<String> redisKeys = redisService.getRedisKeys_matching();
         for (String key:redisKeys
              ) {
             if (!key.equals(userId)){

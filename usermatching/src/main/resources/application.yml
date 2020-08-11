@@ -17,3 +17,6 @@ spring:
     dbserviceurl: http://localhost:8001
 server:
   port: 8088
+#
+#logfile:
+#  path: E:\logfils\PhoneErro

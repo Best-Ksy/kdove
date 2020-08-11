@@ -1,7 +1,9 @@
 package com.kj.kdove.usermatching.controller;
 import com.kj.kdove.commons.dto.ResponseData;
 import com.kj.kdove.commons.enums.UserEnum;
+import com.kj.kdove.usermatching.sms.AsyncTaskSms;
 import com.kj.kdove.usermatching.sms.SendSms;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -9,6 +11,10 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "reg")
 public class SmsController {
+
+    @Autowired
+    private AsyncTaskSms asyncTaskSms;
+
 
 
     /**
@@ -30,8 +36,11 @@ public class SmsController {
         try {
             map = SendSms.sendCode(phoneNumber);
             Integer smsResultInt = Integer.valueOf(map.get("smsResultCode").split("\\.")[0]);
-            System.out.println("第三方状态码："+smsResultInt);
             if (smsResultInt == 200){
+                //验证码成功发送
+                //验证码存入redis（异步执行）
+                asyncTaskSms.RedisSms(map.get("phonenumber"),map.get("smscode"));
+
                 return new ResponseData<Map<String,String>>(
                         UserEnum.SEND_SMS_SUCCESS.getCode(),
                         UserEnum.SEND_SMS_SUCCESS.getMessage(),
