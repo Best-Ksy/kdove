@@ -30,6 +30,7 @@ public class SmsController {
         try {
             map = SendSms.sendCode(phoneNumber);
             Integer smsResultInt = Integer.valueOf(map.get("smsResultCode").split("\\.")[0]);
+            System.out.println("第三方状态码："+smsResultInt);
             if (smsResultInt == 200){
                 return new ResponseData<Map<String,String>>(
                         UserEnum.SEND_SMS_SUCCESS.getCode(),
@@ -43,7 +44,7 @@ public class SmsController {
                         UserEnum.SEND_SMS_SERVICE_EXCEPTION.getMessage(),
                         map
                 );
-            }else if (smsResultInt == 206){
+            }else if (smsResultInt == 405){
                 map.remove("smscode");
                 return new ResponseData<Map<String,String>>(
                         UserEnum.SEND_SMS_MOBILE_ERROR.getCode(),
