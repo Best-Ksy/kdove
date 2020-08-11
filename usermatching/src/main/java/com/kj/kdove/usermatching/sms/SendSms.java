@@ -12,6 +12,13 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+/**
+ * 短息发送的结果不做处理（包括发送失败，服务器异常，手机号码错误等）
+ * 集体返回状态码和随机数码
+ * 具体处理在controller层
+ *
+ */
+
 public class SendSms {
     /**
      * 业务ID，易盾根据产品业务特点分配

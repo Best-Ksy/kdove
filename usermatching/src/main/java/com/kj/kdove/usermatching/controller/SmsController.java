@@ -11,6 +11,18 @@ import java.util.Map;
 public class SmsController {
 
 
+    /**
+     * 短息接口，判断状态码（状态码由第三方提供）
+     * 200：发送成功
+     * 203：第三方服务端异常
+     * 206：手机号码错误
+     * else：超过每日最大发送次数
+     * catch：抛网络异常
+     * 此上为第三方code，不是系统的code，系统返回状态码由UserEnum提供
+     * @param phoneNumber
+     * @return
+     */
+
     @CrossOrigin(origins = "*")
     @GetMapping("getsms")
     public ResponseData<Map<String,String>> registSms(String phoneNumber){
