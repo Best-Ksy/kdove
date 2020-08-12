@@ -20,3 +20,6 @@ server:
 #
 #logfile:
 #  path: E:\logfils\PhoneErro
+RedisDBIndex:
+  matchingRedisDBIndex: 0
+  smsCodeRedisDBIndex: 1

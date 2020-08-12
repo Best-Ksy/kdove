@@ -28,7 +28,9 @@ public class DbApi {
 
     public Call<Map<String,Integer>> addUser(KDoveUser kDoveUser){
         UserInfoProviderApi userInfoProvider = retrofit.create(UserInfoProviderApi.class);
-        kDoveUser.setPassword(passwordEncoder.encode(kDoveUser.getPassword()));
+        if (kDoveUser.getPassword() != null && !"".equals(kDoveUser.getPassword())){
+            kDoveUser.setPassword(passwordEncoder.encode(kDoveUser.getPassword()));
+        }
         return userInfoProvider.addUser(kDoveUser);
     }
 

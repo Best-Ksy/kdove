@@ -16,6 +16,13 @@ public class KDoveUser implements Serializable {
 
     private static final long serialVersionUID = 6463814946309743100L;
 
+    public KDoveUser() {
+    }
+
+    public KDoveUser(String username){
+        this.username = username;
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue(generator = "JDBC")

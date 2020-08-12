@@ -15,8 +15,6 @@ public class SmsController {
     @Autowired
     private AsyncTaskSms asyncTaskSms;
 
-
-
     /**
      * 短息接口，判断状态码（状态码由第三方提供）
      * 200：发送成功
@@ -38,9 +36,8 @@ public class SmsController {
             Integer smsResultInt = Integer.valueOf(map.get("smsResultCode").split("\\.")[0]);
             if (smsResultInt == 200){
                 //验证码成功发送
-                //验证码存入redis（异步执行）
+                //验证码存入redis,新手机号存入数据库（异步执行）
                 asyncTaskSms.RedisSms(map.get("phonenumber"),map.get("smscode"));
-
                 return new ResponseData<Map<String,String>>(
                         UserEnum.SEND_SMS_SUCCESS.getCode(),
                         UserEnum.SEND_SMS_SUCCESS.getMessage(),

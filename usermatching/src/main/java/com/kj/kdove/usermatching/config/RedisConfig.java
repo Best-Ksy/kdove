@@ -16,10 +16,10 @@ import redis.clients.jedis.JedisPoolConfig;
 @EnableAutoConfiguration
 public class RedisConfig {
 
-    @Value("0")
+    @Value("${RedisDBIndex.matchingRedisDBIndex}")
     private int matchingRedisDBIndex;
 
-    @Value("1")
+    @Value("${RedisDBIndex.smsCodeRedisDBIndex}")
     private int smsCodeRedisDBIndex;
 
     @Bean

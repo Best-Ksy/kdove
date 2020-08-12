@@ -14,23 +14,22 @@ public class SmsRDBServiceImpl implements SmsRDBService {
     @Autowired
     private RedisService redisService;
 
+
     @Override
     public void addSmsCodetoRDB(String phoneNum, String smsCode) {
-        redisService.set_sms(phoneNum+"-"+System.currentTimeMillis(),smsCode);
+        String key = phoneNum+"-"+System.currentTimeMillis();
+        redisService.set_sms(key,smsCode);
+        //验证码设置五分钟有效时间
+        expireSmsCode(key,60*5);
     }
 
     @Override
     public List<String> getSmsCodeFromRDBbyPhoneNum(String phoneNum) {
-        List<String> sms = redisService.get_sms(phoneNum);
-        for (String s:sms
-             ) {
-            System.out.println(s);
-        }
-        return null;
+        return  redisService.get_sms(phoneNum);
     }
 
     @Override
     public void expireSmsCode(String key, long expire) {
-
+        redisService.expire_sms(key,expire);
     }
 }
