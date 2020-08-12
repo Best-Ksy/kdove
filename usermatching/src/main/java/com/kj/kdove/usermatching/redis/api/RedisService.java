@@ -23,6 +23,14 @@ public interface RedisService {
     boolean set_sms(String key, String value);
 
     /**
+     * set存数据(ucode)
+     * @param key
+     * @param value
+     * @return
+     */
+    boolean set_ucode(String key, String value);
+
+    /**
      * get获取数据(matching)
      * @param key
      * @return
@@ -35,6 +43,13 @@ public interface RedisService {
      * @return
      */
     List<String> get_sms(String key);
+
+    /**
+     * get获取数据(ucode)
+     * @param key
+     * @return
+     */
+    String get_ucode(String key);
 
     /**
      * 设置有效天数(matching)
@@ -53,11 +68,26 @@ public interface RedisService {
     boolean expire_sms(String key, long expire);
 
     /**
+     * 设置有效天数(ucode)
+     * @param key
+     * @param expire
+     * @return
+     */
+    boolean expire_ucode(String key, long expire);
+
+    /**
      * 移除数据(matching)
      * @param key
      * @return
      */
     boolean remove_matching(String key);
+
+    /**
+     * 移除数据(ucode)
+     * @param key
+     * @return
+     */
+    boolean remove_ucode(String key);
 
     /**
      * 获取所有的key(matching)

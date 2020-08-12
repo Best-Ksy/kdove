@@ -49,4 +49,5 @@ public class KDoveUser implements Serializable {
     @Column(name = "regdate")
     private Date regdate;
 
+
 }

@@ -28,6 +28,10 @@ public class RedisServiceImpl implements RedisService {
     private RedisTemplate<String,?> redisTemplate_sms;
 
 
+    @Autowired
+    @Qualifier("UCodeRedis")
+    private RedisTemplate<String,?> redisTemplate_ucode;
+
 
     @Override
     public boolean set_matching(String key, String value) {
@@ -49,6 +53,19 @@ public class RedisServiceImpl implements RedisService {
             public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
                 RedisSerializer<String> serializer = redisTemplate_sms.getStringSerializer();
                 connection.set(serializer.serialize(key), serializer.serialize(value));
+                return true;
+            }
+        });
+        return result;
+    }
+
+    @Override
+    public boolean set_ucode(String key, String value) {
+        Boolean result = redisTemplate_ucode.execute(new RedisCallback<Boolean>() {
+            @Override
+            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+                RedisSerializer<String> serializer = redisTemplate_ucode.getStringSerializer();
+                connection.set(serializer.serialize(key),serializer.serialize(value));
                 return true;
             }
         });
@@ -88,6 +105,19 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
+    public String get_ucode(String key) {
+        String result = redisTemplate_ucode.execute(new RedisCallback<String>() {
+            @Override
+            public String doInRedis(RedisConnection connection) throws DataAccessException {
+                RedisSerializer<String> serializer = redisTemplate_ucode.getStringSerializer();
+                byte[] value = connection.get(serializer.serialize(key));
+                return serializer.deserialize(value);
+            }
+        });
+        return result;
+    }
+
+    @Override
     public boolean expire_matching(String key, long expire) {
         return redisTemplate_matching.expire(key, expire, TimeUnit.SECONDS);
     }
@@ -98,11 +128,28 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
+    public boolean expire_ucode(String key, long expire) {
+        return redisTemplate_ucode.expire(key, expire, TimeUnit.SECONDS);
+    }
+
+    @Override
     public boolean remove_matching(String key) {
         boolean result = redisTemplate_matching.execute(new RedisCallback<Boolean>() {
             @Override
             public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
                 RedisSerializer<String> serializer = redisTemplate_matching.getStringSerializer();
+                connection.del(key.getBytes());
+                return true;
+            }
+        });
+        return result;
+    }
+
+    @Override
+    public boolean remove_ucode(String key) {
+        boolean result = redisTemplate_ucode.execute(new RedisCallback<Boolean>() {
+            @Override
+            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
                 connection.del(key.getBytes());
                 return true;
             }

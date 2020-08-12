@@ -1,11 +1,22 @@
 package com.kj.kdove.usermatching.controller;
+import com.google.common.collect.Maps;
+import com.kj.kdove.commons.domain.KDoveUser;
 import com.kj.kdove.commons.dto.ResponseData;
+import com.kj.kdove.commons.dto.SmsDto;
 import com.kj.kdove.commons.enums.UserEnum;
+import com.kj.kdove.usermatching.service.api.SmsRDBService;
+import com.kj.kdove.usermatching.service.api.UserDBService;
 import com.kj.kdove.usermatching.sms.AsyncTaskSms;
 import com.kj.kdove.usermatching.sms.SendSms;
+import com.kj.kdove.usermatching.utils.GsonUtil;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -14,6 +25,15 @@ public class SmsController {
 
     @Autowired
     private AsyncTaskSms asyncTaskSms;
+
+    @Autowired
+    private SmsRDBService smsRDBService;
+
+    @Autowired
+    private UserDBService userDBService;
+
+    @Autowired
+    private SimpleDateFormat simpleDateFormat;
 
     /**
      * 短息接口，判断状态码（状态码由第三方提供）
@@ -28,7 +48,7 @@ public class SmsController {
      */
 
     @CrossOrigin(origins = "*")
-    @GetMapping("getsms")
+    @GetMapping("/sms/getsms")
     public ResponseData<Map<String,String>> registSms(String phoneNumber){
         Map <String, String> map = null;
         try {
@@ -74,5 +94,39 @@ public class SmsController {
                     map
             );
         }
+    }
+
+    @PostMapping("/sms/verification")
+    public ResponseData<Map<String,String>> smsVerification(@RequestBody SmsDto smsDto){
+
+        List<String> smsCodeFromRDBbyPhoneNum = smsRDBService.getSmsCodeFromRDBbyPhoneNum(smsDto.getPhoneNumber());
+        //验证码正确
+        if (smsCodeFromRDBbyPhoneNum.contains(smsDto.getSmsCode())) {
+            //先不做会话记录，直接登录即可
+            ResponseData<KDoveUser> userByUserName = userDBService.getUserByUserName(smsDto.getPhoneNumber());
+            HashMap<String, String> respMap = Maps.newHashMap();
+            KDoveUser data = userByUserName.getData();
+            respMap.put("username",data.getUsername());
+            respMap.put("nickname",data.getNickname());
+            respMap.put("ucode",data.getUcode());
+            respMap.put("headurl",data.getHeadurl());
+            respMap.put("regdate",simpleDateFormat.format(data.getRegdate()));
+            respMap.put("email",data.getEmail());
+            respMap.put("id",String.valueOf(data.getId()));
+            return new ResponseData<>(
+                    userByUserName.getCode(),
+                    userByUserName.getMessage(),
+                    respMap
+            );
+
+        }else {
+            //验证码错误
+            return new ResponseData<>(
+                    UserEnum.SMS_ERRO.getCode(),
+                    UserEnum.SMS_ERRO.getMessage(),
+                    null
+            );
+        }
+
     }
 }

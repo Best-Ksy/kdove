@@ -17,7 +17,9 @@ public enum  UserEnum {
     SEND_SMS_SERVICE_EXCEPTION(233,"服务异常"),
     SEND_SMS_MOBILE_ERROR(236,"手机号码不正确"),
     SEND_SMS_OVER_MAXNUM_LIMITS(222,"超过每日最大次数"),
-    SEND_SMS_EXC(223,"网络错误请稍后重试")
+    SEND_SMS_EXC(223,"网络错误请稍后重试"),
+
+    SMS_ERRO(231,"验证码错误")
 
 
     ;

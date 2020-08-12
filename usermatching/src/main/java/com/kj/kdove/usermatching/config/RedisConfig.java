@@ -12,6 +12,13 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
 
+/**
+ *配置三个redis db
+ * db1： 用于匹配
+ * db2： 用于验证码临时保存
+ * db3:  用于保存验证用户状态
+ */
+
 @Configuration
 @EnableAutoConfiguration
 public class RedisConfig {
@@ -21,6 +28,9 @@ public class RedisConfig {
 
     @Value("${RedisDBIndex.smsCodeRedisDBIndex}")
     private int smsCodeRedisDBIndex;
+
+    @Value("${RedisDBIndex.UCodeRedisDBIndex}")
+    private int UCodeRedisDBIndex;
 
     @Bean
     @ConfigurationProperties(prefix = "spring.redis.jedis.pool")
@@ -58,6 +68,20 @@ public class RedisConfig {
         JedisConnectionFactory factory = getConnectionFactory();
         final RedisTemplate<?,?> template  = new StringRedisTemplate();
         factory.setDatabase(smsCodeRedisDBIndex);
+        template.setConnectionFactory(factory);
+        //设置序列化Key的实例化对象
+        template.setKeySerializer(new StringRedisSerializer());
+        //设置序列化Value的实例化对象
+        template.setValueSerializer(new StringRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(new StringRedisSerializer());
+        return template;
+    }
+    @Bean(name = "UCodeRedis")
+    public RedisTemplate<?,?> getUCodeRedisTemplate(){
+        JedisConnectionFactory factory = getConnectionFactory();
+        final RedisTemplate<?,?> template  = new StringRedisTemplate();
+        factory.setDatabase(UCodeRedisDBIndex);
         template.setConnectionFactory(factory);
         //设置序列化Key的实例化对象
         template.setKeySerializer(new StringRedisSerializer());
