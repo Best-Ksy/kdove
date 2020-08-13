@@ -5,6 +5,7 @@ import com.kj.kdove.commons.dto.ResponseData;
 import com.kj.kdove.commons.dto.SmsDto;
 import com.kj.kdove.commons.enums.UserEnum;
 import com.kj.kdove.usermatching.service.api.SmsRDBService;
+import com.kj.kdove.usermatching.service.api.UcodeRDBService;
 import com.kj.kdove.usermatching.service.api.UserDBService;
 import com.kj.kdove.usermatching.sms.AsyncTaskSms;
 import com.kj.kdove.usermatching.sms.SendSms;
@@ -14,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "reg")
@@ -35,6 +33,9 @@ public class SmsController {
     @Autowired
     private SimpleDateFormat simpleDateFormat;
 
+    @Autowired
+    private UcodeRDBService ucodeRDBService;
+
     /**
      * 短息接口，判断状态码（状态码由第三方提供）
      * 200：发送成功
@@ -43,13 +44,17 @@ public class SmsController {
      * else：超过每日最大发送次数
      * catch：抛网络异常
      * 此上为第三方code，不是系统的code，系统返回状态码由UserEnum提供
+     *
+     * 调用接口直接捕获用户信息
+     * redis：临时保存phone：code （10min）
+     * mysql：保存phone，自动生成ucode
      * @param phoneNumber
      * @return
      */
 
     @CrossOrigin(origins = "*")
     @GetMapping("/sms/getsms")
-    public ResponseData<Map<String,String>> registSms(String phoneNumber){
+    public ResponseData<Map<String,String>> registSms(@RequestParam String phoneNumber){
         Map <String, String> map = null;
         try {
             map = SendSms.sendCode(phoneNumber);
@@ -96,14 +101,24 @@ public class SmsController {
         }
     }
 
+    /**
+     * 验证码校验接口
+     * 返回用户数据
+     * redis：保存用户状态
+     * 使用上一步生成的ucode和phone后台生成xcode
+     * redis: xcode:new Date()
+     * @param smsDto
+     * @return
+     */
+
+    @CrossOrigin(origins = "*")
     @PostMapping("/sms/verification")
     public ResponseData<Map<String,String>> smsVerification(@RequestBody SmsDto smsDto){
-
         List<String> smsCodeFromRDBbyPhoneNum = smsRDBService.getSmsCodeFromRDBbyPhoneNum(smsDto.getPhoneNumber());
         //验证码正确
         if (smsCodeFromRDBbyPhoneNum.contains(smsDto.getSmsCode())) {
-            //先不做会话记录，直接登录即可
             ResponseData<KDoveUser> userByUserName = userDBService.getUserByUserName(smsDto.getPhoneNumber());
+            //封装返回参数
             HashMap<String, String> respMap = Maps.newHashMap();
             KDoveUser data = userByUserName.getData();
             respMap.put("username",data.getUsername());
@@ -113,12 +128,14 @@ public class SmsController {
             respMap.put("regdate",simpleDateFormat.format(data.getRegdate()));
             respMap.put("email",data.getEmail());
             respMap.put("id",String.valueOf(data.getId()));
+            //保存用户状态，后台生成xcode，保存redis，有效期6天
+            ucodeRDBService.addUcodetoRDB(data.getUcode(),data.getUsername(),new Date());
+            //返回参数
             return new ResponseData<>(
                     userByUserName.getCode(),
                     userByUserName.getMessage(),
                     respMap
             );
-
         }else {
             //验证码错误
             return new ResponseData<>(
@@ -127,6 +144,5 @@ public class SmsController {
                     null
             );
         }
-
     }
 }

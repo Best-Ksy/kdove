@@ -4,10 +4,13 @@ import com.kj.kdove.commons.domain.KDoveUser;
 import com.kj.kdove.commons.dto.ResponseData;
 import com.kj.kdove.commons.enums.UserEnum;
 import com.kj.kdove.usermatching.service.api.SmsRDBService;
+import com.kj.kdove.usermatching.service.api.UcodeRDBService;
 import com.kj.kdove.usermatching.service.api.UserDBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 
 @Component
@@ -19,6 +22,9 @@ public class AsyncTaskSms {
 
     @Autowired
     private UserDBService userDBService;
+
+    @Autowired
+    private UcodeRDBService ucodeRDBService;
 
     //1.验证码发送成功，手机号-验证码 存入redis
     //2.手机号码存入mysql
@@ -33,6 +39,10 @@ public class AsyncTaskSms {
             //数据库中不存在此用户
             userDBService.addUser(new KDoveUser(phoneNum));
         }
+    }
+
+    public void RedisXcode(String uCode,String phoneNum){
+        ucodeRDBService.addUcodetoRDB(uCode,phoneNum,new Date());
     }
 
 //    //手机号码不正确，写入日志文件

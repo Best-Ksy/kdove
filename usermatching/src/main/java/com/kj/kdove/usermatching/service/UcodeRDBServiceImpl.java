@@ -1,13 +1,15 @@
 package com.kj.kdove.usermatching.service;
 
+import com.kj.kdove.commons.utils.XcodeUtils;
 import com.kj.kdove.usermatching.redis.api.RedisService;
 import com.kj.kdove.usermatching.service.api.UcodeRDBService;
-import org.checkerframework.checker.units.qual.A;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 @Service
 public class UcodeRDBServiceImpl implements UcodeRDBService {
@@ -20,29 +22,28 @@ public class UcodeRDBServiceImpl implements UcodeRDBService {
 
     @Override
     public void addUcodetoRDB(String ucode, String phoneNum, Date date) {
-        String xcode = getXcode(ucode, phoneNum);
-
+        String xcode = XcodeUtils.getXcode(ucode, phoneNum);
+        String flagXcode = redisService.get_ucode(xcode);
+        if (flagXcode == null || "".equals(flagXcode)){
+            redisService.set_ucode(xcode, simpleDateFormat.format(date));
+            redisService.expire_ucode(xcode,60*60*24*6);
+        }
     }
 
     @Override
     public String getValueFromRDBbyUcodeX(String ucode, String phoneNum) {
-        return null;
+        return redisService.get_ucode(XcodeUtils.getXcode(ucode,phoneNum));
     }
 
     @Override
     public void expireUCode(String ucode, String phoneNum, long time) {
-
+        redisService.expire_ucode(XcodeUtils.getXcode(ucode,phoneNum),time);
     }
 
     @Override
     public void delUserState(String ucode, String phoneNum) {
-
+        redisService.remove_ucode(XcodeUtils.getXcode(ucode,phoneNum));
     }
 
-    public String getXcode(String ud,String ph){
-        //这里需要加密，对称加密，前端无法拿到这个xcode，xcode全是后端计算
-        // 前端只需要提供后端传的ucode和phonenum
-        char[] chars = ph.toCharArray();
-        return null;
-    }
+
 }
