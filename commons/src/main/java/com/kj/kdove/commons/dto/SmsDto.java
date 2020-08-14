@@ -1,10 +1,14 @@
 package com.kj.kdove.commons.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
 @Data
+@Getter
+@Setter
 public class SmsDto implements Serializable {
 
 
@@ -12,6 +16,7 @@ public class SmsDto implements Serializable {
 
     private String phoneNumber;
     private String smsCode;
+
 
 
 }

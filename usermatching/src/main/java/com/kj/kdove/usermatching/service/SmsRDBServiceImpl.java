@@ -20,7 +20,7 @@ public class SmsRDBServiceImpl implements SmsRDBService {
         String key = phoneNum+"-"+System.currentTimeMillis();
         redisService.set_sms(key,smsCode);
         //验证码设置五分钟有效时间
-        expireSmsCode(key,60*10);
+//        expireSmsCode(key,60*10);
     }
 
     @Override

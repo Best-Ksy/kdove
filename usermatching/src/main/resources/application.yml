@@ -3,6 +3,9 @@ spring:
     name: usernatching
   main:
     allow-bean-definition-overriding: true
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
   redis:
     host: 127.0.0.1
     port: 6379
