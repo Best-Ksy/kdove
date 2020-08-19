@@ -4,6 +4,7 @@ import com.kj.kdove.commons.domain.KDoveUser;
 import com.kj.kdove.commons.dto.ResponseData;
 import com.kj.kdove.commons.dto.SmsDto;
 import com.kj.kdove.commons.enums.UserEnum;
+import com.kj.kdove.commons.utils.XcodeUtils;
 import com.kj.kdove.usermatching.service.api.SmsRDBService;
 import com.kj.kdove.usermatching.service.api.UcodeRDBService;
 import com.kj.kdove.usermatching.service.api.UserDBService;
@@ -128,6 +129,7 @@ public class SmsController {
             respMap.put("regdate",simpleDateFormat.format(data.getRegdate()));
             respMap.put("email",data.getEmail());
             respMap.put("id",String.valueOf(data.getId()));
+            respMap.put("xcode", XcodeUtils.getXcode(data.getUcode(),data.getUsername()));
             //保存用户状态，后台生成xcode，保存redis，有效期6天
             ucodeRDBService.addUcodetoRDB(data.getUcode(),data.getUsername(),new Date());
             //返回参数
