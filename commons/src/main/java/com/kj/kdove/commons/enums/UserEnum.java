@@ -19,7 +19,10 @@ public enum  UserEnum {
     SEND_SMS_OVER_MAXNUM_LIMITS(222,"超过每日最大次数"),
     SEND_SMS_EXC(223,"网络错误请稍后重试"),
 
-    SMS_ERRO(231,"验证码错误")
+    SMS_ERRO(231,"验证码错误"),
+
+    USER_LOGIN_STATUS_FALSE(501,"用户登陆状态过期"),
+    USER_LOGIN_STATUS_SUCCESS(500,"用户登陆状态正常")
 
 
     ;

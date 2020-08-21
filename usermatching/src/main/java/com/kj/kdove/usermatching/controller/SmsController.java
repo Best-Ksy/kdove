@@ -147,4 +147,22 @@ public class SmsController {
             );
         }
     }
+
+    @GetMapping("/sms/verification/xcode")
+    public ResponseData<String> xCodeVerification(@RequestParam String Xcode){
+        String valueFromRDBbyUcodeX = ucodeRDBService.getValueFromRDBbyUcodeX(Xcode);
+        if (valueFromRDBbyUcodeX == null){
+            return new ResponseData<>(
+                    UserEnum.USER_LOGIN_STATUS_FALSE.getCode(),
+                    UserEnum.USER_LOGIN_STATUS_FALSE.getMessage(),
+                    null
+            );
+        }else {
+            return new ResponseData<>(
+                    UserEnum.USER_LOGIN_STATUS_SUCCESS.getCode(),
+                    UserEnum.USER_LOGIN_STATUS_SUCCESS.getMessage(),
+                    valueFromRDBbyUcodeX
+            );
+        }
+    }
 }

@@ -18,7 +18,7 @@ public interface UcodeRDBService {
      * @param phoneNum
      * @return
      */
-    String getValueFromRDBbyUcodeX(String ucode,String phoneNum);
+    String getValueFromRDBbyUcodeX(String Xcode);
 
     /**
      * 用户状态有效期
