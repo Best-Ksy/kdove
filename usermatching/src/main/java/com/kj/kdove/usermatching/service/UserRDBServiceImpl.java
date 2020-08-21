@@ -22,7 +22,7 @@ public class UserRDBServiceImpl implements UserRDBService {
         if (value == null){
 
             redisService.set_matching(userId,userId+"/"+ipAddr+"-");
-//            redisService.expire(userId,100);
+            redisService.expire_matching(userId,20);
             return true;
         }else {
             return false;
@@ -47,6 +47,7 @@ public class UserRDBServiceImpl implements UserRDBService {
             return false;
         }else {
             redisService.set_matching(key,value);
+            redisService.expire_matching(key,20);
             return true;
         }
     }

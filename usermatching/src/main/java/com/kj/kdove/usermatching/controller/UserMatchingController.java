@@ -27,6 +27,13 @@ public class UserMatchingController {
     @GetMapping(value = "/getmatching/{userid}")
     public ResponseData<Map<String,String>> MatchingFunction(@PathVariable String userid, HttpServletRequest request){
         String ipAddr = IpUtil.getIpAddr(request);
+
+        /*
+        * 这里还需要判断是不是匹配频率太快，
+        * 判断缓存中是否已经存在，缓存中存在相同的key不许匹配
+        * 缓存中的key过期时间是20s，也就是说必须至少间隔20s才能下一次匹配
+        * */
+
         //存入reids
         boolean flag = userRDBService.addUserIdtoRDB(userid,ipAddr);
         try {
@@ -46,10 +53,10 @@ public class UserMatchingController {
                 );
             }else {
                 //匹配成功，在内存中删除自己的匹配信息
-                if (userRDBService.getValueByUserIdFromRDB(userid) != null){
-
-                    userRDBService.removeUserIdFromRDB(userid);
-                }
+//                if (userRDBService.getValueByUserIdFromRDB(userid) != null){
+//
+//                    userRDBService.removeUserIdFromRDB(userid);
+//                }
                 String date = simpleDateFormat.format(new Date());
                 matchmap.put("date",date);
                 return new ResponseData<>(
